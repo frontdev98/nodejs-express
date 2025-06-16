@@ -7,5 +7,8 @@ const pool = new pg.Pool({
     password: '12345678'
 });
 
+pool.on('error', (err, client) => {
+    console.log(err);
+})
 
 module.exports = pool

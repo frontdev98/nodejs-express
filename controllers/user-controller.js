@@ -4,84 +4,54 @@ class UserController {
     async add(req, res) {
         const {name, surname, age} = req.body;
 
-        try {
-            const newUser = await pool.query(`INSERT INTO person (name, surname, age) 
-                                          VALUES ($1, $2, $3) RETURNING *`, [name, surname, age]);
-            console.log(`Created user: ${newUser.rows[0].id} ${newUser.rows[0].name} ${newUser.rows[0].surname}`);
+        const newUser = await pool.query(`INSERT INTO person (name, surname, age) 
+                                        VALUES ($1, $2, $3) RETURNING *`, [name, surname, age]);
+        console.log(`Created user: ${newUser.rows[0].id} ${newUser.rows[0].name} ${newUser.rows[0].surname}`);
 
-            res.json(newUser.rows);
-
-        } catch (err) {
-            console.log(err);
-            res.status(400).send("Error was occured during database access.");
-        } 
+        res.json(newUser.rows);
     }
 
     async getAll(req, res) {
-        try {
-            const allUsers = await pool.query(`SELECT * FROM person`);
+        const allUsers = await pool.query(`SELECT * FROM person`);
 
-            console.log(`Requested ${allUsers.rows.length} users.`);
+        console.log(`Requested ${allUsers.rows.length} users.`);
 
-            res.send(allUsers.rows);
-        
-        } catch (err) {
-            console.log(err);
-            res.status(400).send("Error was occured during database access.");
-        }
+        res.send(allUsers.rows);
     }
 
     async getOne(req, res) {
         const userId = req.params.id;
 
-        try {
-            const user = await pool.query(`SELECT * FROM person WHERE id=$1`, [userId]);
+        const user = await pool.query(`SELECT * FROM person WHERE id=$1`, [userId]);
 
-            console.log(`Requested user ${user.rows[0].id} ${user.rows[0].name} ${user.rows[0].surname}`)
+        console.log(`Requested user ${user.rows[0].id} ${user.rows[0].name} ${user.rows[0].surname}`)
 
-            res.send(user.rows);
-
-        } catch (err) {
-            console.log(err);
-            res.status(400).send("Error was occured during database access.");
-        }
+        res.send(user.rows);
     }
 
     async modify(req, res) {
         const userId = req.params.id;
         const {name, surname, age} = req.body;
 
-        try {
-            const updatedUser = await pool.query(
-                `UPDATE person SET name = $1, 
-                                   surname = $2, 
-                                   age = $3 
-                WHERE id = $4 RETURNING *`, [name, surname, age, userId]);
-    
-            console.log(`Updated user: ${updatedUser.rows[0].id} ${updatedUser.rows[0].name} ${updatedUser.rows[0].surname}`)
-            
-            res.send(updatedUser.rows);
+        const updatedUser = await pool.query(
+            `UPDATE person SET name = $1, 
+                                surname = $2, 
+                                age = $3 
+            WHERE id = $4 RETURNING *`, [name, surname, age, userId]);
 
-        } catch (err) {
-            console.log(err);
-            res.status(400).send("Error was occured during database access.");
-        }
+        console.log(`Updated user: ${updatedUser.rows[0].id} ${updatedUser.rows[0].name} ${updatedUser.rows[0].surname}`)
+        
+        res.send(updatedUser.rows);
     }
 
     async delete(req, res) {
         const userId = req.params.id;
 
-        try {
-            const deletedUser = await pool.query(`DELETE FROM person WHERE id = $1 RETURNING *`, [userId]);
+        const deletedUser = await pool.query(`DELETE FROM person WHERE id = $1 RETURNING *`, [userId]);
 
-            console.log(`Remove user ${deletedUser.rows[0].id} ${deletedUser.rows[0].name} ${deletedUser.rows[0].surname}`)
+        console.log(`Remove user ${deletedUser.rows[0].id} ${deletedUser.rows[0].name} ${deletedUser.rows[0].surname}`)
 
-            res.send(deletedUser.rows);
-            
-        } catch (err) {
-            console.log(err);
-            res.status(400).send("Error was occured during database access.");
-        }
+        res.send(deletedUser.rows);
     }
 }
 
