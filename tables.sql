@@ -1,3 +1,11 @@
+CREATE TABLE person (
+    id          SERIAL          PRIMARY KEY,
+    name        VARCHAR(255)    NOT NULL,
+    surname     VARCHAR(255)    NOT NULL,
+    middle_name VARCHAR(255),
+    age         INT             NOT NULL
+);
+
 CREATE TABLE agent (
     id          SERIAL          PRIMARY KEY,
     name        VARCHAR(255)    NOT NULL,
