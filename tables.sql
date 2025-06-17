@@ -24,7 +24,7 @@ CREATE TABLE connection (
     os          INT,
     device      INT,
 
-    FOREIGN KEY (agent) REFERENCES agent (id),
-    FOREIGN KEY (os) REFERENCES os (id),
-    FOREIGN KEY (device) REFERENCES device (id)
+    FOREIGN KEY (agent) REFERENCES agent (id) ON DELETE CASCADE,
+    FOREIGN KEY (os) REFERENCES os (id) ON DELETE CASCADE,
+    FOREIGN KEY (device) REFERENCES device (id) ON DELETE CASCADE
 );
