@@ -6,6 +6,16 @@ CREATE TABLE person (
     age         INT             NOT NULL
 );
 
+CREATE TABLE posts (
+    id          SERIAL          PRIMARY KEY,
+    title       VARCHAR(255)    NOT NULL,
+    content     VARCHAR(4096)   NOT NULL,
+    image_path  NVARCHAR(255),
+    person      INT             NOT NULL,
+    
+    FOREIGN KEY (person) REFERENCES person (id) ON DELETE CASCADE;
+);
+
 CREATE TABLE agent (
     id          SERIAL          PRIMARY KEY,
     name        VARCHAR(255)    NOT NULL,
@@ -32,7 +42,7 @@ CREATE TABLE connection (
     os          INT,
     device      INT,
 
-    FOREIGN KEY (agent) REFERENCES agent (id) ON DELETE CASCADE,
-    FOREIGN KEY (os) REFERENCES os (id) ON DELETE CASCADE,
-    FOREIGN KEY (device) REFERENCES device (id) ON DELETE CASCADE
+    FOREIGN KEY (agent) REFERENCES agent (id),
+    FOREIGN KEY (os) REFERENCES os (id),
+    FOREIGN KEY (device) REFERENCES device (id)
 );
